@@ -23,7 +23,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::middleware(['auth', 'role:instructor'])->prefix('instructor')->name('instructor.')->group(function () {
+Route::middleware(['auth'])->prefix('instructor')->name('instructor.')->group(function () {
     Route::resource('courses', CourseController::class);
 });
 
