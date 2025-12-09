@@ -1,5 +1,3 @@
-<?php
-
 use App\Http\Controllers\ProfileController;
 use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Support\Facades\Route;
