@@ -1,5 +1,5 @@
 <x-guest-layout>
-    <div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="min-h-screen flex items-center justify-center bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
         <div class="w-full max-w-md">
             <!-- Header -->
             <div class="text-center mb-8">
@@ -10,7 +10,7 @@
             </div>
 
             <!-- Register Card -->
-            <div class="bg-white rounded-lg border-gray-200 p-8">
+            <div class="bg-white rounded-lg border-gray-200 pt-4 px-8 pb-8">
                 <form method="POST" action="{{ route('register') }}" class="space-y-6">
                     @csrf
 
@@ -89,7 +89,7 @@
                             required 
                             autocomplete="new-password"
                             class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="••••••••">
+                            placeholder="At least 8 characters">
                         <x-input-error :messages="$errors->get('password')" class="mt-1" />
                     </div>
 
@@ -105,7 +105,7 @@
                             required 
                             autocomplete="new-password"
                             class="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="••••••••">
+                            placeholder="Re-enter password">
                         <x-input-error :messages="$errors->get('password_confirmation')" class="mt-1" />
                     </div>
 

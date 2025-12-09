@@ -1,5 +1,5 @@
 <x-guest-layout>
-    <div class="flex items-center justify-center bg-gradient-to-br from-indigo-100 via-purple-50 to-pink-100 py-12 px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-center bg-gradient-to-br from-indigo-100 via-purple-50 to-pink-100 py-10 px-4 sm:px-6 lg:px-8">
         <div class="max-w-md w-full space-y-8">
             <!-- Header -->
             <div class="text-center">
