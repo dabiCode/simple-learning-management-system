@@ -1,3 +1,4 @@
+
 <x-app-layout>
     <div class="py-6">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -12,23 +13,35 @@
 
             <!-- Course List -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                @forelse($courses as $course)
+                    <div class="bg-white shadow-sm rounded-lg p-5 border border-gray-200">
+                        <img src="{{ $course->thumbnail ? asset('storage/' . $course->thumbnail) : 'https://via.placeholder.com/400x200' }}"
+                             alt="Course Image"
+                             class="rounded-md mb-4 w-full h-40 object-cover">
 
-                <!-- Course Card Example -->
-                <div class="bg-white shadow-sm rounded-lg p-5 border border-gray-200">
-                    <img src="https://via.placeholder.com/400x200" 
-                         alt="Course Image" 
-                         class="rounded-md mb-4 w-full h-40 object-cover">
+                        <h2 class="text-lg font-semibold text-gray-800">{{ $course->title }}</h2>
+                        <p class="text-gray-600 text-sm mt-1">
+                            {{ \Illuminate\Support\Str::limit($course->short_description, 120) }}
+                        </p>
 
-                    <h2 class="text-lg font-semibold text-gray-800">Sample Course Title</h2>
-                    <p class="text-gray-600 text-sm mt-1">Short course description goes here.</p>
+                        <p class="text-xs text-gray-500 mt-2">
+                            By {{ $course->instructor->name ?? 'Unknown' }}
+                        </p>
 
-                    <a href="#" 
-                       class="mt-4 inline-block px-4 py-2 bg-indigo-600 text-white text-sm rounded hover:bg-indigo-700 transition">
-                        View Course
-                    </a>
-                </div>
+                        <a href="{{ route('student.courses.show', $course->id) }}"
+                           class="mt-4 inline-block px-4 py-2 bg-indigo-600 text-white text-sm rounded hover:bg-indigo-700 transition">
+                            View Course
+                        </a>
+                    </div>
+                @empty
+                    <div class="col-span-1 md:col-span-2 lg:col-span-3 bg-white shadow-sm rounded-lg p-6 border border-gray-200 text-center">
+                        <p class="text-gray-600">No courses available right now. Check back later.</p>
+                    </div>
+                @endforelse
+            </div>
 
-                <!-- More course cards can go here -->
+            <div class="mt-6">
+                {{ $courses->links() }}
             </div>
 
         </div>

@@ -1,12 +1,10 @@
 <?php
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\DashboardController; // add this
-use App\Http\Requests\Auth\LoginRequest;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Instructor\CourseController;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\StudentCourseController;
 
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\StudentCourseController;
+use App\Http\Controllers\Instructor\CourseController;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return redirect('/login');
@@ -26,11 +24,13 @@ Route::middleware(['auth'])->prefix('instructor')->name('instructor.')->group(fu
     Route::resource('courses', CourseController::class);
 });
 
+// Student courses routes
 Route::middleware(['auth'])
     ->prefix('student')
     ->name('student.')
     ->group(function () {
-        Route::get('/courses', [StudentCourseController::class, 'index'])
-            ->name('courses.index');
+        Route::get('/courses', [StudentCourseController::class, 'index'])->name('courses.index');
+        Route::get('/courses/{course}', [StudentCourseController::class, 'show'])->name('courses.show');
     });
+
 require __DIR__.'/auth.php';
