@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Instructor;
 
 use App\Http\Controllers\Controller;
 use App\Models\Course;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -39,7 +40,6 @@ class CourseController extends Controller
 
     public function edit(Course $course)
     {
-        // Ensure instructor can only edit their own courses
         if ($course->instructor_id !== Auth::id()) {
             abort(403);
         }
@@ -49,7 +49,6 @@ class CourseController extends Controller
 
     public function update(Request $request, Course $course)
     {
-        // Ensure instructor can only update their own courses
         if ($course->instructor_id !== Auth::id()) {
             abort(403);
         }
@@ -69,7 +68,6 @@ class CourseController extends Controller
 
     public function destroy(Course $course)
     {
-        // Ensure instructor can only delete their own courses
         if ($course->instructor_id !== Auth::id()) {
             abort(403);
         }
@@ -78,5 +76,36 @@ class CourseController extends Controller
 
         return redirect()->route('instructor.courses.index')
             ->with('success', 'Course deleted successfully!');
+    }
+
+    public function applications(Course $course)
+    {
+        if ($course->instructor_id !== Auth::id()) {
+            abort(403);
+        }
+
+        return view('instructor.courses.applications', compact('course'));
+    }
+
+    public function acceptStudent(Course $course, User $student)
+    {
+        if ($course->instructor_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $course->students()->updateExistingPivot($student->id, ['status' => 'accepted']);
+
+        return redirect()->back()->with('success', ucfirst($student->name) . ' accepted!');
+    }
+
+    public function rejectStudent(Course $course, User $student)
+    {
+        if ($course->instructor_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $course->students()->updateExistingPivot($student->id, ['status' => 'rejected']);
+
+        return redirect()->back()->with('success', ucfirst($student->name) . ' rejected!');
     }
 }

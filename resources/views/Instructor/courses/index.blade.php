@@ -59,22 +59,26 @@
                                     {{ $course->created_at->format('M j, Y') }} • Updated {{ $course->updated_at->diffForHumans() }}
                                 </div>
 
-                                <div class="flex gap-2">
-                                    <a href="{{ route('instructor.courses.edit', $course) }}" 
-                                       class="flex-1 text-center px-3 py-2 bg-gray-100 text-gray-700 rounded-md text-sm font-medium hover:bg-gray-200">
-                                        Edit
-                                    </a>
-                                    <form action="{{ route('instructor.courses.destroy', $course) }}" 
-                                          method="POST" 
-                                          onsubmit="return confirm('Are you sure you want to delete this course?');">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" 
-                                                class="px-3 py-2 bg-red-100 text-red-700 rounded-md text-sm font-medium hover:bg-red-200">
-                                            Delete
-                                        </button>
-                                    </form>
-                                </div>
+              <div class="flex gap-2">
+    <a href="{{ route('instructor.courses.edit', $course) }}" 
+       class="flex-1 text-center px-3 py-2 bg-gray-100 text-gray-700 rounded-md text-sm font-medium hover:bg-gray-200">
+        Edit
+    </a>
+    <a href="{{ route('instructor.courses.applications', $course->id) }}"
+       class="flex-1 text-center px-3 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700">
+        Applications
+    </a>
+    <form action="{{ route('instructor.courses.destroy', $course) }}" 
+          method="POST" 
+          onsubmit="return confirm('Are you sure you want to delete this course?');">
+        @csrf
+        @method('DELETE')
+        <button type="submit" 
+                class="px-3 py-2 bg-red-100 text-red-700 rounded-md text-sm font-medium hover:bg-red-200">
+            Delete
+        </button>
+    </form>
+</div>
                             </div>
                         </div>
                     @endforeach

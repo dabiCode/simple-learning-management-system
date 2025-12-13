@@ -1,4 +1,3 @@
-
 <x-app-layout>
     <div class="py-6">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -28,14 +27,47 @@
                             By {{ $course->instructor->name ?? 'Unknown' }}
                         </p>
 
-                        <div class="text-xs text-gray-500 mt-2">
-                            {{ $course->created_at->format('M j, Y') }} • Updated {{ $course->updated_at->diffForHumans() }}
-                        </div>
+                        <!-- Student Count -->
+                        @php
+                            $confirmedCount = \Illuminate\Support\Facades\DB::table('course_student')
+                                ->where('course_id', $course->id)
+                                ->where('status', 'accepted')
+                                ->count();
+                        @endphp
+                        <p class="text-xs text-blue-600 font-semibold mt-2">
+                            @if($confirmedCount > 0)
+                                {{ $confirmedCount }} {{ $confirmedCount === 1 ? 'Student' : 'Students' }} Enrolled
+                            @else
+                                No students enrolled yet
+                            @endif
+                        </p>
 
-                        <a href="{{ route('student.courses.show', $course->id) }}"
-                           class="mt-4 inline-block px-4 py-2 bg-indigo-600 text-white text-sm rounded hover:bg-indigo-700 transition">
-                            View Course
-                        </a>
+                        <div class="mt-4 flex gap-2">
+                            <a href="{{ route('student.courses.show', $course->id) }}"
+                               class="flex-1 px-4 py-2 bg-indigo-600 text-white text-sm rounded hover:bg-indigo-700 transition text-center">
+                                View
+                            </a>
+
+                            @php
+                                $isApplied = $course->students()->where('student_id', Auth::id())->exists();
+                            @endphp
+
+                            @if($isApplied)
+                                <form action="{{ route('student.courses.withdraw', $course->id) }}" method="POST" class="flex-1">
+                                    @csrf
+                                    <button type="submit" class="w-full px-4 py-2 bg-gray-400 text-white text-sm rounded hover:bg-gray-500 transition">
+                                        Withdraw
+                                    </button>
+                                </form>
+                            @else
+                                <form action="{{ route('student.courses.apply', $course->id) }}" method="POST" class="flex-1">
+                                    @csrf
+                                    <button type="submit" class="w-full px-4 py-2 bg-green-600 text-white text-sm rounded hover:bg-green-700 transition">
+                                        Apply
+                                    </button>
+                                </form>
+                            @endif
+                        </div>
                     </div>
                 @empty
                     <div class="col-span-1 md:col-span-2 lg:col-span-3 bg-white shadow-sm rounded-lg p-6 border border-gray-200 text-center">

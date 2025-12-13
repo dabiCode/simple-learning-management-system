@@ -12,13 +12,17 @@ class DashboardController extends Controller
         $user = Auth::user();
 
         if ($user->role === 'student') {
-            return view('student'); // resources/views/student.blade.php
+            // Get courses the student has applied for
+            $appliedCourses = $user->enrolledCourses()->with('instructor')->get();
+            return view('student', compact('appliedCourses'));
         } elseif ($user->role === 'instructor') {
-            // Fetch only courses created by this instructor
-            $courses = Course::where('instructor_id', $user->id)
-                             ->where('status', 'published') // optional filter
-                             ->paginate(6); // adjust number per page
-
+            // Get instructor's courses with accepted students count
+            $courses = $user->courses()
+                ->withCount(['students' => function($query) {
+                    $query->where('status', 'accepted');
+                }])
+                ->latest()
+                ->get();
             return view('instructor', compact('courses'));
         }
 

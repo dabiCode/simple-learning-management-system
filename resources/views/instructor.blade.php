@@ -101,11 +101,13 @@
                                 </p>
 
                                 <p class="text-xs text-gray-500 mt-2">
-                                    {{ $course->enrolled_students_count > 0 
-                                        ? $course->enrolled_students_count . ' student' . ($course->enrolled_students_count !== 1 ? 's' : '') . ' enrolled' 
-                                        : 'No students enrolled yet' }}
+                                    @if($course->students_count > 0)
+                                        {{ $course->students_count }} {{ $course->students_count === 1 ? 'Student' : 'Students' }} Enrolled
+                                    @else
+                                        No students enrolled yet
+                                    @endif
                                 </p>
-                            </div>
+                                </div>
 
                             <a href="{{ route('student.courses.show', $course->id) }}"
                                 class="mt-2.5 inline-block px-3 py-1.5 bg-indigo-600 text-white text-xs rounded hover:bg-indigo-700 transition">
